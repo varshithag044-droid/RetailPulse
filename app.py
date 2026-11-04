@@ -84,11 +84,12 @@ hr {
 # ---------------------------------------------------------
 @st.cache_data
 def load_data():
-    df = pd.read_csv("retail_prepared.csv")
-    df["Order_Date"] = pd.to_datetime(df["Order_Date"], errors="coerce")
-    df["Quantity"] = pd.to_numeric(df["Quantity"], errors="coerce")
-    df["Unit_Price"] = pd.to_numeric(df["Unit_Price"], errors="coerce")
-    df["Sales"] = df["Quantity"] * df["Unit_Price"]
+    with gzip.open("retail_prepared.csv.gz", "rt") as f:
+         df = pd.read_csv(f)
+         df["Order_Date"] = pd.to_datetime(df["Order_Date"], errors="coerce")
+         df["Quantity"] = pd.to_numeric(df["Quantity"], errors="coerce")
+         df["Unit_Price"] = pd.to_numeric(df["Unit_Price"], errors="coerce")
+         df["Sales"] = df["Quantity"] * df["Unit_Price"]
     return df
 
 df = load_data()
